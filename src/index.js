@@ -1,3 +1,2 @@
 // @flow
-import normalize from './normalize'
-export default normalize
+export * from './actions'

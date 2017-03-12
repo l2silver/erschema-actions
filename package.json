@@ -1,5 +1,5 @@
 {
-  "name": "erschema-normalize",
+  "name": "erschema-actions",
   "version": "1.0.0",
   "description": "A normalizer for erschema",
   "main": "index.js",
@@ -9,12 +9,13 @@
     "type": "flow-copy-source -v src dist --ignore '*.test.*'",
     "prepublish": "npm run clean && npm run build && npm run type",
     "test": "jest src",
+    "jest": "jest",
     "flow": "flow",
     "flowtyped": "flow-typed"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/l2silver/erschema-normalize.git"
+    "url": "git+https://github.com/l2silver/erschema-actions.git"
   },
   "keywords": [
     "erschema",
@@ -23,9 +24,9 @@
   "author": "Leigh Silverstein",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/l2silver/erschema-normalize/issues"
+    "url": "https://github.com/l2silver/erschema-actions/issues"
   },
-  "homepage": "https://github.com/l2silver/erschema-normalize#readme",
+  "homepage": "https://github.com/l2silver/erschema-actions#readme",
   "devDependencies": {
     "babel": "^6.23.0",
     "babel-cli": "^6.23.0",
@@ -41,6 +42,12 @@
   "dependencies": {
     "blacklist": "^1.1.4",
     "erschema": "^1.0.1",
-    "lodash.pick": "^4.4.0"
+    "erschema-action-handlers": "^1.0.0",
+    "erschema-normalize": "^1.0.0",
+    "lodash.pick": "^4.4.0",
+    "redux-actions": "^2.0.1",
+    "redux-batched-actions": "^0.1.5",
+    "redux-retype-actions": "^1.0.3",
+    "resource-action-types": "^1.0.1"
   }
 }
