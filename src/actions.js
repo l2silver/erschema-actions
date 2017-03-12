@@ -10,7 +10,7 @@ type $$id = string | number
 
 const getRelatedName = (name)=>`GET_RELATED_${actionifyName(name)}`
 
-export class Action {
+export class Actions {
   constants: $$mapOf<string>;
   actions: {
     create: (ent: Object) => any,
@@ -53,7 +53,7 @@ export class Action {
   }
 }
 
-export class PageAction {
+export class PageActions {
   constants: $$mapOf<string>;
   actions: {
     create: (ent: Object) => any,
