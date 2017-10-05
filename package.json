@@ -40,11 +40,7 @@
     "jest": "^19.0.2"
   },
   "dependencies": {
-    "blacklist": "^1.1.4",
-    "erschema": "^1.0.1",
-    "erschema-action-handlers": "^1.0.0",
-    "erschema-normalize": "^1.0.0",
-    "lodash.pick": "^4.4.0",
+    "erschema-redux-immutable": "^1.0.0",
     "redux-actions": "^2.0.1",
     "redux-batched-actions": "^0.1.5",
     "redux-retype-actions": "^1.0.3",

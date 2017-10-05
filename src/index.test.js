@@ -9,23 +9,29 @@ jest.mock('erschema-action-handlers', ()=>({
     index: (entityName, relationships)=>({entityName, relationships})
   }
 }))
-import {Action} from './'
-import {schemaMapper, standardizeEntity} from 'erschema'
+import Actions from './'
+import {standardizeEntity} from 'erschema'
 
 const getId = ()=>Math.floor((Math.random()*100000))
 describe('Action', function() {
-  const schema = schemaMapper([
-    standardizeEntity({
-      name: 'users',
+  const schema = {
+    users: standardizeEntity({
+      Model: class {},
       properties: ['name', 'id'],
-      relationships: [{name: 'friends'}],
+      relationships: {
+        manyRelationships: {
+          friends: [{}]
+        },
+        monoRelationships: {
+        },
+      },
     }),
-    standardizeEntity({
-      name: 'friends',
+    friends: standardizeEntity({
+      Model: class {},
       properties: ['name', 'id']
     })
-  ])
-  class ActionWithSchema extends Action {
+  };
+  class ActionWithSchema extends Actions {
     constructor(name){
       super(schema, name)
     }
@@ -34,7 +40,8 @@ describe('Action', function() {
   describe('creates an action instance with access to', function(){
     it('get', function() {
       const entity = {id: 1, name: 'John'}
-      expect(action.actions.get({...entity, friends: []})).toMatchSnapshot()
+      const results = action.actions.get({...entity, friends: []})
+      expect(results).toMatchSnapshot()
     })
   })
 })
