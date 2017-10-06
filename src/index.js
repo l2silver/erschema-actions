@@ -4,11 +4,27 @@ import {enableBatching, batchActions} from 'redux-batched-actions'
 import recompose from 'redux-compose-hors'
 import resourceActions, {generateActionName as actionifyName} from 'resource-action-types'
 import * as entityActions from 'erschema-redux-immutable/actions/entities'
-import * as relationshipActions from 'erschema-redux-immutable/actions/relationships'
-import normalize, {indexNormalize} from 'erschema-redux-immutable/actions/normalize'
+
+import preNormalize, {indexNormalize as preIndexNormalize} from 'erschema-redux-immutable/actions/normalize'
 
 import type {$schema} from 'erschema/types'
 
+const combineIndexes = (normalizedActions)=>{
+  const {indexEntities, indexRelationships} = normalizedActions
+  return [...indexEntities, ...indexRelationships]
+}
+
+const normalize = (...args)=>{
+  return batchActions(combineIndexes(preNormalize(...args)))
+}
+
+const indexNormalize = (...args)=>{
+  return batchActions(
+    preIndexNormalize(...args).reduce((finalResult, normalizedActions)=>{
+      return finalResult.concat(combineIndexes(normalizedActions))
+    }, [])
+  )  
+}
 type $$id = string | number
 
 const getRelatedName = (name)=>`GET_RELATED_${actionifyName(name)}`;
@@ -25,7 +41,6 @@ export default class Actions {
     getAdditionalEntityProperties: (id: $$id, entityName: string, entity: Object) => any,
     concatRelated: (id: $$id, relationshipName: string, ents: Object[]) => any,
   };
-  relationships: Object;
   name: string;
   constructor (schema: $schema, name: string) {
     this.name = name
