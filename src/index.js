@@ -1,10 +1,10 @@
 // @flow
 import {enableRetyping, retypeAction} from 'redux-retype-actions'
 import {enableBatching, batchActions} from 'redux-batched-actions'
-import recompose from 'redux-recompose-hors'
+import recompose from 'redux-compose-hors'
 import resourceActions, {generateActionName as actionifyName} from 'resource-action-types'
-import entityActions from 'erschema-redux-immutable/actions/entities'
-import relationshipActions from 'erschema-redux-immutable/actions/relationships'
+import * as entityActions from 'erschema-redux-immutable/actions/entities'
+import * as relationshipActions from 'erschema-redux-immutable/actions/relationships'
 import normalize, {indexNormalize} from 'erschema-redux-immutable/actions/normalize'
 
 import type {$schema} from 'erschema/types'

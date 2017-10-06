@@ -1,16 +1,14 @@
 // @flow
 jest.mock('redux-batched-actions', ()=>({batchActions: (action)=>action}))
 jest.mock('redux-retype-actions', ()=>({retypeAction: (name, action)=>action}))
-jest.mock('erschema-action-handlers', ()=>({
-  entityActions: {
-    index: (entityName, entities)=>({entityName, entities})
-  },
-  relationshipActions: {
-    index: (entityName, relationships)=>({entityName, relationships})
-  }
+jest.mock('erschema-redux-immutable/actions/entities', ()=>({
+  index: (entityName, entities)=>({entityName, entities})
+}))
+jest.mock('erschema-redux-immutable/actions/relationships', ()=>({
+  index: (entityName, relationships)=>({entityName, relationships})
 }))
 import Actions from './'
-import {standardizeEntity} from 'erschema'
+import standardizeEntity from 'erschema-redux-immutable/schemas'
 
 const getId = ()=>Math.floor((Math.random()*100000))
 describe('Action', function() {
@@ -18,13 +16,10 @@ describe('Action', function() {
     users: standardizeEntity({
       Model: class {},
       properties: ['name', 'id'],
-      relationships: {
-        manyRelationships: {
-          friends: [{}]
-        },
-        monoRelationships: {
-        },
-      },
+      relationships: [{
+        entityName: 'users',
+        name: 'friends',
+      }]
     }),
     friends: standardizeEntity({
       Model: class {},
@@ -40,7 +35,7 @@ describe('Action', function() {
   describe('creates an action instance with access to', function(){
     it('get', function() {
       const entity = {id: 1, name: 'John'}
-      const results = action.actions.get({...entity, friends: []})
+      const results = action.entities.get({...entity, friends: []})
       expect(results).toMatchSnapshot()
     })
   })
