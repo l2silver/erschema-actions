@@ -1,6 +1,6 @@
 {
   "name": "erschema-actions",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A normalizer for erschema",
   "main": "dist/index.js",
   "scripts": {
