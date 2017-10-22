@@ -48,8 +48,8 @@ export default class Actions {
       create: (entity) => entityActions.create(name, entity),
       update: (entity) => entityActions.update(name, entity),
       remove: (id) => entityActions.remove(name, id),
-      get: (entity) => retypeAction(resourceActions.get(name), normalize(entity, name, schema)),
-      index: (entities) => retypeAction(resourceActions.index(name), indexNormalize(entities, name, schema)),
+      get: (entity) => retypeAction(`NORMALIZE_${resourceActions.get(name)}`, normalize(entity, name, schema)),
+      index: (entities) => retypeAction(`NORMALIZE_${resourceActions.index(name)}`, indexNormalize(entities, name, schema)),
       getRelated: (id, relationshipName, entities) => {
         if (entities instanceof Error) {
           return retypeAction(getRelatedName(name), entityActions.get(name, entities))
