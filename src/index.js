@@ -4,6 +4,7 @@ import {enableBatching, batchActions} from 'redux-batched-actions'
 import recompose from 'redux-compose-hors'
 import resourceActions, {generateActionName as actionifyName} from 'resource-action-types'
 import * as entityActions from 'erschema-redux-immutable/actions/entities'
+import * as relationshipActions from 'erschema-redux-immutable/actions/relationships'
 
 import preNormalize, {indexNormalize as preIndexNormalize} from 'erschema-redux-immutable/actions/normalize'
 
@@ -27,6 +28,13 @@ const indexNormalize = (...args)=>{
 }
 type $$id = string | number
 
+type $relationship = {
+  entityName: string,
+  name: string,
+  id: $$id,
+};
+
+
 const getRelatedName = (name)=>`GET_RELATED_${actionifyName(name)}`;
 const concatRelatedName = (name)=>`CONCAT_RELATED_${actionifyName(name)}`;
 
@@ -40,6 +48,7 @@ export default class Actions {
     getRelated: (id: $$id, relationshipName: string, ents: Object[]) => any,
     getAdditionalEntityProperties: (id: $$id, entityName: string, entity: Object) => any,
     concatRelated: (id: $$id, relationshipName: string, ents: Object[]) => any,
+    createRelated: (ent: Object, relationship: $relationship) => any,
   };
   name: string;
   constructor (schema: $schema, name: string) {
@@ -78,7 +87,31 @@ export default class Actions {
               }
             }
           }))
-      }
+      },
+      createRelated: (entity, relationship) =>
+        retypeAction(
+          `CREATE_RELATED_${actionifyName(this.name)}_${actionifyName(
+            relationship.entityName
+          )}`,
+          batchActions([
+            this.entities.create(entity),
+            relationshipActions.link(relationship.entityName, {
+              relationshipName: relationship.name,
+              id: relationship.id,
+              relationshipValue: entity.id,
+            }),
+          ])
+        ),
+      createRelatedPage: (
+        entity: { id: $$id },
+        page: string,
+        relationshipName: string
+      ) =>
+        this.entities.createRelated(entity, {
+          entityName: 'pages',
+          name: relationshipName,
+          id: page,
+        }),
     }
   }
 }
