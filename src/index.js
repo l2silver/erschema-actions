@@ -49,6 +49,7 @@ export default class Actions {
     getAdditionalEntityProperties: (id: $$id, entityName: string, entity: Object) => any,
     concatRelated: (id: $$id, relationshipName: string, ents: Object[]) => any,
     createRelated: (ent: Object, relationship: $relationship) => any,
+    createRelatedPage: (ent: Object, page: string, relationshipName: string) => any,
   };
   name: string;
   constructor (schema: $schema, name: string) {
@@ -140,7 +141,7 @@ export class PageActions {
         }
         return retypeAction(
           `${getRelatedName(name)}_${actionifyName(relationshipName)}`,
-          normalize({[relationshipName]: entities}, 'pages', schema, firstSchema[name]))
+          normalize({id: name, [relationshipName]: entities}, 'pages', schema, firstSchema[name]))
       },
       concatRelated: (relationshipName, entities) => {
         if (entities instanceof Error) {
@@ -148,7 +149,7 @@ export class PageActions {
         }
         return retypeAction(
           `${concatRelatedName(name)}_${actionifyName(name)}`,
-          normalize({[relationshipName]: entities}, 'pages', schema, firstSchema[name],
+          normalize({id: name, [relationshipName]: entities}, 'pages', schema, firstSchema[name],
           {
             relationships: {
               [name]: {
